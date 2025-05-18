@@ -29,7 +29,7 @@ const Survey = () => {
 
   return (
     <div className="p-6 max-w-xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">🍽️ Personalize Your Meal Plan</h1>
+      <h1 className="text-2xl font-bold mb-4">Please list your dietary restrictions.</h1>
       <form onSubmit={handleSurveySubmit}>
         {/* Diet Selection */}
         <label className="block mb-2">Select your diet:</label>
@@ -42,11 +42,13 @@ const Survey = () => {
           <option value="vegetarian">Vegetarian</option>
           <option value="vegan">Vegan</option>
           <option value="ketogenic">Ketogenic</option>
+          <option value="ketogenic">Low-Carb</option>
+          <option value="ketogenic">Fasting</option>
         </select>
 
         {/* Intolerances (Checkboxes) */}
         <label className="block mb-2">Select any intolerances:</label>
-        {['gluten', 'dairy', 'peanut'].map((item) => (
+        {['gluten', 'dairy', 'nuts', 'eggs', 'fish', 'alcohol', 'sugar'].map((item) => (
           <div key={item}>
             <label>
               <input
