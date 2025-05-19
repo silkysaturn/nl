@@ -9,7 +9,6 @@ const CheckDish = () => {
   const [loading, setLoading] = useState(false);
   const [intolerances, setIntolerances] = useState([]);
 
-  // Fetch user intolerances from Firestore
   useEffect(() => {
     const fetchUserIntolerances = async () => {
       const user = auth.currentUser;
@@ -26,7 +25,6 @@ const CheckDish = () => {
     fetchUserIntolerances();
   }, []);
 
-  // Convert image to base64
   const getBase64 = (file) =>
     new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -62,7 +60,6 @@ const CheckDish = () => {
 
     const data = await response.json();
 
-    // Google Vision format
     const detectedIngredients = data.labels.map((item) => item.name.toLowerCase());
 
     setIngredients(detectedIngredients);
@@ -116,7 +113,7 @@ const CheckDish = () => {
         </div>
       ) : (
         ingredients.length > 0 && (
-          <p className="text-green-700 mt-4">✅ No known allergens found based on your profile.</p>
+          <p className="text-green-700 mt-4">No known allergens found based on your profile.</p>
         )
       )}
     </div>

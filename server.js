@@ -8,7 +8,6 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json({ limit: '10mb' }));
 
-// Create a client with the service account JSON key
 const client = new vision.ImageAnnotatorClient({
   keyFilename: './path-to-your-service-account-file.json',
 });
