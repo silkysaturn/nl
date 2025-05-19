@@ -13,16 +13,34 @@ const Dashboard = () => {
   };
 
   return (
-    <div>
+    <>
       <div className="title-section" >
-        <h1 class="font-mono">Welcome to NutriLINE</h1>
+
+        <div className="title-text">
+
+          <h1>Welcome to NutriLINE</h1>
+
+          <h3>Healthy eating made simple.</h3> 
+          <p>Personalized nutrition app that helps users identify ingredients and manage dietary restrictions.</p>
+
+        </div>
+       
       </div>
 
-      <Link to="/profile">View Profile</Link>
+      <div className="profile-dash" onClick={() => navigate('/profile')} >
+        Visit your profile
+      </div>
+
+      <div className="plan-a-meal" onClick={() => navigate('/plan')}>
+      Plan a Meal
+      </div>
+
+      <div className="check-a-meal" onClick={() => navigate('/check')}>
+        Check Your Meals
+      </div>
 
 
-  
-    </div>
+    </>
   );
 };
 

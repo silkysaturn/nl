@@ -1,61 +1,84 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { auth, db } from '../firebase';
 import { doc, getDoc } from 'firebase/firestore';
 import axios from 'axios';
+import { useLocation } from 'react-router-dom';
 
 const PlanMeal = () => {
-  const [meals, setMeals] = useState([]);
+  const [recipe, setRecipe] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const location = useLocation(); // capture query string
 
   useEffect(() => {
     const fetchMealPlan = async () => {
-      const user = auth.currentUser;
-      if (!user) return;
-
-      const userDoc = await getDoc(doc(db, "users", user.uid));
-      const userData = userDoc.data();
-
-      const diet = userData.diet || "";
-      const intolerances = (userData.intolerances || []).join(',');
-
-      const apiKey = "YOUR_SPOONACULAR_API_KEY";
-      const url = `https://api.spoonacular.com/mealplanner/generate?timeFrame=day&diet=${diet}&intolerances=${intolerances}&apiKey=${apiKey}`;
-
       try {
-        const response = await axios.get(url);
-        setMeals(response.data.meals);
+        if (!process.env.REACT_APP_SPOONACULAR_API_KEY) {
+          throw new Error('Spoonacular API key is not configured');
+        }
+
+        const user = auth.currentUser;
+        if (!user) {
+          setError('User not logged in.');
+          setLoading(false);
+          return;
+        }
+
+        const userRef = doc(db, 'users', user.uid);
+        const userSnap = await getDoc(userRef);
+        const userData = userSnap.data();
+
+        const diet = userData?.diet || '';
+        const intolerances = userData?.intolerances?.join(',') || '';
+
+        const res = await axios.get('https://api.spoonacular.com/recipes/complexSearch', {
+          params: {
+            number: 1,
+            diet,
+            intolerances,
+            addRecipeInformation: true,
+            apiKey: process.env.REACT_APP_SPOONACULAR_API_KEY,
+          },
+        });
+
+        if (res.data.results.length === 0) {
+          setError('No recipe found matching your preferences.');
+        } else {
+          setRecipe(res.data.results[0]);
+        }
       } catch (err) {
-        console.error("Error fetching meals:", err);
+        console.error('Failed to fetch recipe:', err);
+        let errorMessage = 'Failed to load recipe. ';
+
+        if (axios.isAxiosError(err)) {
+          if (err.response) {
+            errorMessage += `Server error: ${err.response.status} - ${err.response.data?.message || err.message}`;
+          } else if (err.request) {
+            errorMessage += 'No response from server. Please check your internet connection.';
+          } else {
+            errorMessage += err.message;
+          }
+        } else {
+          errorMessage += err.message;
+        }
+
+        setError(errorMessage);
       } finally {
         setLoading(false);
       }
     };
 
     fetchMealPlan();
-  }, []);
+  }, [location.search]); // <- refetch when query param changes
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>{error}</p>;
 
   return (
-    <div className="p-6 max-w-3xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">🥗 Your Personalized Meal Plan</h1>
-      {loading ? (
-        <p>Loading...</p>
-      ) : (
-        meals.map(meal => (
-          <div key={meal.id} className="border p-4 rounded mb-4 bg-white shadow">
-            <h2 className="text-xl font-semibold">{meal.title}</h2>
-            <a
-              href={`https://spoonacular.com/recipes/${meal.title
-                .toLowerCase()
-                .replace(/ /g, "-")}-${meal.id}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-600 underline"
-            >
-              View Recipe
-            </a>
-          </div>
-        ))
-      )}
+    <div>
+      <h2>{recipe.title}</h2>
+      <img src={recipe.image} alt={recipe.title} style={{ width: '300px' }} />
+      <p dangerouslySetInnerHTML={{ __html: recipe.summary }} />
     </div>
   );
 };
