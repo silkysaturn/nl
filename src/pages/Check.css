@@ -1,0 +1,121 @@
+body {
+    font-family: "Century Gothic", sans-serif;
+}
+
+.upload-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}   
+
+.upload-section h1 {
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+.upload-section input {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+}
+
+.upload-section button {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+    background-color: #000;
+    color: #fff;
+    cursor: pointer;
+}
+
+.upload-section button:hover {
+    background-color: #333;
+}   
+
+.upload-section button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}   
+
+.results-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}   
+
+.results-section h2 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}      
+
+.results-section ul {
+    list-style-type: none;
+    padding: 0;
+}      
+
+.results-section p {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}      
+
+.results-section li {
+    margin-bottom: 5px;
+}   
+
+.results-section strong {
+    font-weight: bold;
+}   
+
+.results-section .alert {
+    color: red;
+}   
+
+.results-section .safe {
+    color: green;
+}   
+
+.results-section .mt-6 {
+    margin-top: 1.5rem;
+}
+
+.results-section .bg-red-100 {
+    background-color: #f8d7da;
+}   
+
+.results-section .text-red-700 {
+    color: #842029;
+}   
+
+.results-section .list-disc {
+    list-style-type: disc;
+}   
+
+.results-section .list-inside {
+    padding-left: 1.5rem;
+}   
+
+.results-section .text-green-700 {
+    color: #155724;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

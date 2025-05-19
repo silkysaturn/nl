@@ -23,12 +23,10 @@ const Profile = () => {
 
       <div className="profile-header">
 
-        <img src='/images/profile-user.png' />
         <h1>Your Profile</h1>
 
       </div>
         
-      <h2>Your Profile</h2>
       {userData ? (
         <ul>
           <li><strong>Email:</strong> {userData.email}</li>
