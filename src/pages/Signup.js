@@ -1,9 +1,9 @@
-// src/pages/Signup.js
 import { useState } from 'react';
 import { auth, db } from '../firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
+import './Signup.css';
 
 const Signup = () => {
   const [email, setEmail] = useState('');
